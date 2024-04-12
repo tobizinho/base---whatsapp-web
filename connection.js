@@ -13,15 +13,21 @@ client = new Client({
   puppeteer: {
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  }, // Make headless true or
+  },
 });
 
-client.on("ready", () => {
-  console.log("Client is ready!");
+client.on("ready", async () => {
+  await console.log("Client is ready!");
+  return client.sendMessage("559491652693@c.us", "> Conectado >.<");
 });
 
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
+});
+
+client.on("message", async (msg) => {
+  if (!msg.from.includes("@g.us") || !msg.from.includes("@c.us")) return;
+  require("./files/commands")(msg);
 });
 
 client.initialize();
